@@ -1,6 +1,7 @@
 #!/bin/sh
 input=$(cat)
 
+host=$(hostname -s 2>/dev/null || hostname 2>/dev/null || uname -n)
 model=$(echo "$input" | jq -r '.model.display_name // "Unknown Model"')
 model=$(echo "$model" | sed 's/^Claude //')
 effort=$(echo "$input" | jq -r '.effort.level // empty')
@@ -86,7 +87,7 @@ repo_root=$(cd "$current_dir" 2>/dev/null && git rev-parse --show-toplevel 2>/de
 dir_display=$(basename "$repo_root")
 
 if [ -n "$effort" ]; then
-  printf "🤖 %s | 💪 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌳 %s | 🌿 %s" "$model" "$effort" "$usage_str" "$rate_limit_str" "$dir_display" "$worktree_str" "$git_str"
+  printf "💻 %s | 🤖 %s | 💪 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌳 %s | 🌿 %s" "$host" "$model" "$effort" "$usage_str" "$rate_limit_str" "$dir_display" "$worktree_str" "$git_str"
 else
-  printf "🤖 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌳 %s | 🌿 %s" "$model" "$usage_str" "$rate_limit_str" "$dir_display" "$worktree_str" "$git_str"
+  printf "💻 %s | 🤖 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌳 %s | 🌿 %s" "$host" "$model" "$usage_str" "$rate_limit_str" "$dir_display" "$worktree_str" "$git_str"
 fi
