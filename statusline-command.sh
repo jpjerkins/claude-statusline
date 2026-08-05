@@ -87,7 +87,17 @@ repo_root=$(cd "$current_dir" 2>/dev/null && git rev-parse --show-toplevel 2>/de
 dir_display=$(basename "$repo_root")
 
 if [ -n "$effort" ]; then
-  printf "💻 %s | 🤖 %s | 💪 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌿 %s | 🌳 %s" "$host" "$model" "$effort" "$usage_str" "$rate_limit_str" "$dir_display" "$git_str" "$worktree_str"
+  case "$effort" in
+    low)    dot="🟢" ;;
+    medium) dot="🟡" ;;
+    high)   dot="🔴" ;;
+    xhigh)  dot="🟣" ;;
+    max)    dot="⚫" ;;
+    *)      dot="⚪" ;;
+  esac
+  model_str="$model $dot"
 else
-  printf "💻 %s | 🤖 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌿 %s | 🌳 %s" "$host" "$model" "$usage_str" "$rate_limit_str" "$dir_display" "$git_str" "$worktree_str"
+  model_str="$model"
 fi
+
+printf "💻 %s | 🤖 %s | 🧠 %s | ⏳ %s | 📁 %s | 🌿 %s | 🌳 %s" "$host" "$model_str" "$usage_str" "$rate_limit_str" "$dir_display" "$git_str" "$worktree_str"
