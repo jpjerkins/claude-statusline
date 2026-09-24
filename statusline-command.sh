@@ -83,7 +83,7 @@ format_rl() {
 rate_limit_str=""
 rate_limit_str="${rate_limit_str}$(format_rl "$rl_5h_pct" "$rl_5h_reset" "5h")"
 rl_7d_str=$(format_rl "$rl_7d_pct" "$rl_7d_reset" "7d" "%a %-I:%M%p")
-[ -n "$rl_7d_str" ] && rate_limit_str="${rate_limit_str} ${rl_7d_str}"
+[ -n "$rl_7d_str" ] && rate_limit_str="${rate_limit_str} | ${rl_7d_str}"
 
 repo_root=$(cd "$current_dir" 2>/dev/null && git rev-parse --show-toplevel 2>/dev/null || echo "$current_dir")
 dir_display=$(basename "$repo_root")
