@@ -17,7 +17,7 @@ following changes:
 ## Example
 
 ```
-🤖 Opus 4.8 | 🧠 ██░░░░░░░░ 22% | ⏳ 5h █████░░░░░ 58% 11:47PM | 📁 dcm | 🌳 no worktree | 🌿 main
+🤖 Opus 4.8 | 🧠 ██░░░░░░░░ 22% | ⏳ 5h █████░░░░░ 58% 11:47PM 7d ██░░░░░░░░ 22% Thu 8:33PM | 📁 dcm | 🌳 no worktree | 🌿 main
 ```
 
 ## Requirements

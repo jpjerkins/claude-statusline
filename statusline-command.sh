@@ -10,7 +10,7 @@ worktree=$(echo "$input" | jq -r '.worktree.name // empty')
 current_dir=$(echo "$input" | jq -r '.worktree.original_cwd // empty')
 rl_5h_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty' | awk '{printf "%.0f", $1}')
 rl_5h_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
-rl_7d_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+rl_7d_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty' | awk '{printf "%.0f", $1}')
 rl_7d_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 if [ -n "$worktree" ]; then
@@ -72,16 +72,18 @@ format_rl() {
   pct="$1"
   reset_ts="$2"
   label="$3"
+  time_fmt="${4:-%-I:%M%p}"
   [ -z "$pct" ] && return
   color=$(bar_color "$pct")
-  reset_time=$(date -r "$reset_ts" "+%-I:%M%p" 2>/dev/null || date -d "@$reset_ts" "+%-I:%M%p" 2>/dev/null)
+  reset_time=$(date -r "$reset_ts" "+$time_fmt" 2>/dev/null || date -d "@$reset_ts" "+$time_fmt" 2>/dev/null)
   bar=$(make_bar "$pct")
   printf "${color}${label} ${bar} ${pct}%% ${reset_time}${RESET}"
 }
 
 rate_limit_str=""
 rate_limit_str="${rate_limit_str}$(format_rl "$rl_5h_pct" "$rl_5h_reset" "5h")"
-# rate_limit_str="${rate_limit_str}$(format_rl "$rl_7d_pct" "$rl_7d_reset" "7d")"
+rl_7d_str=$(format_rl "$rl_7d_pct" "$rl_7d_reset" "7d" "%a %-I:%M%p")
+[ -n "$rl_7d_str" ] && rate_limit_str="${rate_limit_str} ${rl_7d_str}"
 
 repo_root=$(cd "$current_dir" 2>/dev/null && git rev-parse --show-toplevel 2>/dev/null || echo "$current_dir")
 dir_display=$(basename "$repo_root")
